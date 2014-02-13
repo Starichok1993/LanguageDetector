@@ -22,7 +22,7 @@ namespace LanguageDetection
 				defaults: new { id = System.Web.Http.RouteParameter.Optional } 
 		        );
 
-           //Database.SetInitializer(new LanguageDetectorInitializer());
+            Database.SetInitializer(new LanguageDetectorInitializer());
 
             // Code that runs on application startup
             BundleConfig.RegisterBundles(BundleTable.Bundles);

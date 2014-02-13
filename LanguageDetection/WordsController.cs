@@ -7,18 +7,23 @@ using System.Web.Http;
 using Entity;
 using LanguageDetector.BLL.Implementation;
 using LanguageDetector.BLL.Implementation.Manager;
+using System.Configuration;
 
 namespace LanguageDetection
 {
     public class WordsController : ApiController
     {
-        private readonly WordManager _wordManager = new WordManager();
+        private readonly WordManager _wordManager = new WordManager(ConfigurationManager.AppSettings["TranslatorKey"]);
 
         // GET api/<controller>
         public IEnumerable<Word> Get()
         {
 	        var newWord = new Word {Text = "Cool", Language = "English", PercentOfReliability = 100};
 			//_wordManager.InsertWord(newWord);
+
+            _wordManager.GetWordByText("Русские");
+
+
 	        List<Word> list = _wordManager.GetAll().ToList();
             return _wordManager.GetAll();
         }

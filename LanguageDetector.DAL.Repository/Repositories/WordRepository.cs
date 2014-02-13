@@ -32,8 +32,7 @@ namespace LanguageDetector.DAL.Repository
 
 		public Word FindByText(string text)
 		{
-			return DbSet.FirstOrDefault(p => p.Text == text);
-			
+			return DbSet.FirstOrDefault(p => p.Text == text);			
 		}
 
 		public void InsertOrUpdate(Word obj)
