@@ -13,7 +13,7 @@ namespace LanguageDetector.DAL.Repository
 {
     public class LanguageDetectorContext : DbContext
     {
-        public LanguageDetectorContext() : base("LanguageDetector")
+        public LanguageDetectorContext() : base("LanguageDetectorContext")
         {
             //Db(new System.Data.SQLite.SQLiteFactory());
         }

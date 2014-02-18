@@ -21,7 +21,7 @@ namespace LanguageDetection
 				routeTemplate: "api/{controller}/{id}",
 				defaults: new { id = System.Web.Http.RouteParameter.Optional } 
 		        );
-
+            
             Database.SetInitializer(new LanguageDetectorInitializer());
 
             // Code that runs on application startup
