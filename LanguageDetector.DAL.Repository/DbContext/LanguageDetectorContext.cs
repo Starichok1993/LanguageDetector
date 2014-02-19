@@ -16,6 +16,7 @@ namespace LanguageDetector.DAL.Repository
         public LanguageDetectorContext() : base("LanguageDetectorContext")
         {
             //Db(new System.Data.SQLite.SQLiteFactory());
+            
         }
 
         public DbSet<Word> Words { get; set; }
