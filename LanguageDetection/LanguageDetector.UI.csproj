@@ -153,6 +153,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Data\Bulgarian.txt" />
+    <Content Include="App_Data\English.txt" />
+    <Content Include="App_Data\Portuguese.txt" />
+    <Content Include="App_Data\Russian.txt" />
+    <Content Include="App_Data\Spanish.txt" />
     <Content Include="Content\LanguageDetecor.CSS\Default.css" />
     <Content Include="Content\Site.css" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
@@ -286,9 +291,7 @@
     </Compile>
     <Compile Include="WordsController.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="App_Data\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="Site.Master" />
   </ItemGroup>

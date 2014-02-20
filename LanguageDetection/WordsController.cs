@@ -18,13 +18,8 @@ namespace LanguageDetection
         // GET api/<controller>
         public IEnumerable<Word> Get()
         {
-	        var newWord = new Word {Text = "Cool", Language = "English", PercentOfReliability = 100};
-			//_wordManager.InsertWord(newWord);
-
-            _wordManager.GetWordByText("Русские");
-
-
 	        List<Word> list = _wordManager.GetAll().ToList();
+            _wordManager.GetWordByText("mendigo");
             return _wordManager.GetAll();
         }
 
