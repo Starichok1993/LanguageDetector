@@ -18,7 +18,7 @@ namespace LanguageDetection
         {
 	        RouteTable.Routes.MapHttpRoute(
 		        name: "DefaultApi",
-				routeTemplate: "api/{controller}/{id}",
+				routeTemplate: "api/{controller}/{text}",
 				defaults: new { id = System.Web.Http.RouteParameter.Optional } 
 		        );
             

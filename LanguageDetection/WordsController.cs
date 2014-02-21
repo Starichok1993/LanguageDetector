@@ -19,14 +19,15 @@ namespace LanguageDetection
         public IEnumerable<Word> Get()
         {
 	        List<Word> list = _wordManager.GetAll().ToList();
-            _wordManager.GetWordByText("mendigo");
+            _wordManager.GetWordByText("gracias");
             return _wordManager.GetAll();
         }
 
         // GET api/<controller>/5
         public Word Get(string text)
         {
-            return _wordManager.GetWordByText(text);
+            var resultWord = _wordManager.GetWordByText(text);
+            return resultWord;
         }
 
         // POST api/<controller>

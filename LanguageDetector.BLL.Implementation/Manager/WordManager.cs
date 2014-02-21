@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -38,9 +39,17 @@ namespace LanguageDetector.BLL.Implementation.Manager
             {
                 //var translator = new Translator(_translatorKey);
                 //var langKey = translator.DetectLang(text);
-
-                var result = WorkWithText(text);
                 
+                var result = WorkWithText(text);
+                decimal por;
+                decimal.TryParse(result.Values.ToString(), out por);
+
+                resultWord = new Word
+                {
+                    Text = text,
+                    Language = result.Keys.ToString(),
+                    PercentOfReliability  = por
+                };
 //                _wordRepository.InsertOrUpdate(resultWord);
                 _wordRepository.Save();
             }
@@ -62,23 +71,20 @@ namespace LanguageDetector.BLL.Implementation.Manager
                 languageWithScoreDictionary.Add(lang, score);
             }
 
-            return languageWithScoreDictionary.ToDictionary(item => item.Key,
-                item => (decimal) ((item.Value/totalScore)*100));
+            return languageWithScoreDictionary.ToDictionary(d => d.Key, d => (decimal) ((d.Value/totalScore)*100));
         }
-
         private string GetTextFromDocument(string docName)
         {
             var resultString = "";
-
             try
             {
                 Encoding enc = Encoding.GetEncoding(1251);
                 var streamReader = new StreamReader(@"C:\Users\Alex\Documents\Visual Studio 2013\Projects\LanguageDetection\LanguageDetection\App_Data\" + docName, enc);
+                
                 while (!streamReader.EndOfStream)
                 {
                     resultString += streamReader.ReadLine();
                 }
-
                 streamReader.Close();
             }
             catch (Exception e)
@@ -88,7 +94,6 @@ namespace LanguageDetector.BLL.Implementation.Manager
 
             return resultString;
         }
-
         private double GetScore(string text, List<string> ngramms)
         {
             double resultScore = 0.0;
@@ -112,7 +117,6 @@ namespace LanguageDetector.BLL.Implementation.Manager
 
             return resultScore/text.Length;
         }
-
         private List<string> getWordsFromText(string text)
         {
             
@@ -128,13 +132,6 @@ namespace LanguageDetector.BLL.Implementation.Manager
 
             return result;
         }
-
-        public void InsertWord(Word word)
-        {
-            _wordRepository.InsertOrUpdate(word);
-            _wordRepository.Save();
-        }
-
         private List<string> GetNgrammFromWord(string text, int n)   //get ngrammList from input text, n- how match length of gramm
         {
             if (text.Length < n)
@@ -151,6 +148,14 @@ namespace LanguageDetector.BLL.Implementation.Manager
 
             return ngrammList;
         }
+        
+        public void InsertWord(Word word)
+        {
+            _wordRepository.InsertOrUpdate(word);
+            _wordRepository.Save();
+        }
+
+
         
     }
 }

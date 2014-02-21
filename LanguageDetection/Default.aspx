@@ -3,9 +3,13 @@
 <asp:Content runat="server" ID="FeaturedContent" ContentPlaceHolderID="FeaturedContent">
     </asp:Content>
 <asp:Content runat="server" ID="BodyContent" ContentPlaceHolderID="MainContent">
-	
-    <asp:TextBox ID="TextBox1" CssClass ="LanguageDetectorArea" runat="server"></asp:TextBox>
-	<table id="toolTip">
+	<div id="inputContainer">
+        <div id="hiddenArea">
+            <span class="hiddenWord"></span>
+        </div>
+        <asp:TextBox ID="TextBox1" CssClass ="LanguageDetectorArea" runat="server"></asp:TextBox>
+	</div>
+    <table id="toolTip">
 		<tr>
 			<td>Text</td>
 			<td>Language</td>

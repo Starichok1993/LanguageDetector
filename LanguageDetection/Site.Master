@@ -41,7 +41,7 @@
         <div class="content-wrapper">
             <div class="float-left">
                 <p class="site-title">
-                    <a runat="server" href="~/">Lenguage detector</a>
+                    <a runat="server" href="~/">Language detector</a>
                 </p>
             </div>
         </div>

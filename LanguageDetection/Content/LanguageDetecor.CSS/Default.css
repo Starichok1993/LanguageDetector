@@ -3,3 +3,18 @@
 	position: absolute;
 	background: gold;
 }
+
+#hiddenArea {
+    visibility: hidden;
+    position: absolute;
+    font-size: 1.21em;
+    margin: 6px;
+}
+
+.hiddenWord {
+    visibility: hidden;
+}
+
+.LanguageDetectorArea {
+    position: inherit;
+}
