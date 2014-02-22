@@ -19,7 +19,7 @@ namespace LanguageDetection
         public IEnumerable<Word> Get()
         {
 	        List<Word> list = _wordManager.GetAll().ToList();
-            _wordManager.GetWordByText("gracias");
+            _wordManager.GetWordByText("хоккей");
             return _wordManager.GetAll();
         }
 
