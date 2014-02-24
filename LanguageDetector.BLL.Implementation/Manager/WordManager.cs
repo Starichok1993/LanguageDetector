@@ -1,27 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
+using System.Configuration;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
 using Entity;
 using LanguageDetector.BLL.Interface.Manager;
 using LanguageDetector.DAL.Repository;
-using YandexLinguistics.NET;
 
 namespace LanguageDetector.BLL.Implementation.Manager
 {
     public class WordManager:IWordManager
     {
         private readonly WordRepository _wordRepository;
-        private readonly string _translatorKey;
         private readonly List<string> _languageList; 
 
-        public WordManager(string translatorKey)
+        public WordManager()
         {
-            _translatorKey = translatorKey;
             _languageList = new List<string> { "English", "Spanish", "Portuguese", "Bulgarian", "Russian" };
             _wordRepository = new WordRepository(new LanguageDetectorContext());
         }
@@ -36,42 +32,54 @@ namespace LanguageDetector.BLL.Implementation.Manager
             var resultWord = _wordRepository.FindByText(text);
 
             if (resultWord == null)
-            {
-                //var translator = new Translator(_translatorKey);
-                //var langKey = translator.DetectLang(text);
-                
+            {                
                 var result = WorkWithText(text);
-                decimal por;
-                decimal.TryParse(result.Values.ToString(), out por);
 
                 resultWord = new Word
                 {
                     Text = text,
-                    Language = result.Keys.ToString(),
-                    PercentOfReliability  = por
+                    Languages = new List<ChanceOfLanguage>()
                 };
-//                _wordRepository.InsertOrUpdate(resultWord);
+
+                foreach (var chanceOfLanguage in result)
+                {
+                    chanceOfLanguage.WordId = text;
+                    resultWord.Languages.Add(chanceOfLanguage);
+                }
+
+                _wordRepository.InsertOrUpdate(resultWord);
                 _wordRepository.Save();
             }
 
             return resultWord;
         }
 
-        private Dictionary<string, decimal> WorkWithText(string text)
+        private IEnumerable<ChanceOfLanguage> WorkWithText(string text)
         {
-            List<string> ngramms = GetNgrammFromWord(text, 3);
+            var ngramms = GetNgrammFromWord(text, 3);
+            if (ngramms == null)
+            {
+                return null;
+            }
             var languageWithScoreDictionary = new Dictionary<string, double>();
+
             double totalScore = 0;
 
             foreach (var lang in _languageList)
             {
-                string docText = GetTextFromDocument(lang + ".txt");
-                double score = GetScore(docText, ngramms);
+                var docText = GetTextFromDocument(@"C:\Users\Alex\Documents\Visual Studio 2013\Projects\LanguageDetection\LanguageDetection\App_Data\" + lang + ".txt");
+                var score = GetScore(docText, ngramms);
                 totalScore += score;
                 languageWithScoreDictionary.Add(lang, score);
             }
 
-            return languageWithScoreDictionary.ToDictionary(d => d.Key, d => (decimal) ((d.Value/totalScore)*100));
+            if (Math.Abs(totalScore) < 0.00000)
+            {
+                totalScore = 1;
+            }
+
+            return languageWithScoreDictionary.Select(d =>
+                new ChanceOfLanguage {Language = d.Key, Chance = (decimal) ((d.Value/totalScore)*100)}).ToList();
         }
         private string GetTextFromDocument(string docName)
         {
@@ -79,7 +87,8 @@ namespace LanguageDetector.BLL.Implementation.Manager
             try
             {
                 Encoding enc = Encoding.GetEncoding(1251);
-                var streamReader = new StreamReader(@"C:\Users\Alex\Documents\Visual Studio 2013\Projects\LanguageDetection\LanguageDetection\App_Data\" + docName, enc);
+                //var streamReader = new StreamReader(@"C:\Users\Alex\Documents\Visual Studio 2013\Projects\LanguageDetection\LanguageDetection\App_Data\" + docName, enc);
+                var streamReader = new StreamReader(docName, enc);
                 
                 while (!streamReader.EndOfStream)
                 {
@@ -94,10 +103,10 @@ namespace LanguageDetector.BLL.Implementation.Manager
 
             return resultString;
         }
-        private double GetScore(string text, List<string> ngramms)
+        private double GetScore(string text, ICollection<string> ngramms)
         {
             double resultScore = 0.0;
-            var listWords = getWordsFromText(text);
+            var listWords = GetWordsFromText(text);
 
             foreach (var word in listWords)
             {
@@ -117,7 +126,7 @@ namespace LanguageDetector.BLL.Implementation.Manager
 
             return resultScore/text.Length;
         }
-        private List<string> getWordsFromText(string text)
+        private IEnumerable<string> GetWordsFromText(string text)
         {
             
             var pattern = @"\w+";
@@ -141,21 +150,13 @@ namespace LanguageDetector.BLL.Implementation.Manager
 
             var ngrammList = new List<string>();
             var normalText = text.ToLower();
+
             for (int i = 0; i + n <= normalText.Length; i++)
             {
                 ngrammList.Add(normalText.Substring(i, n));
             }
 
             return ngrammList;
-        }
-        
-        public void InsertWord(Word word)
-        {
-            _wordRepository.InsertOrUpdate(word);
-            _wordRepository.Save();
-        }
-
-
-        
+        }      
     }
 }

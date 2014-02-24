@@ -86,15 +86,21 @@
 		    }
 
 		    console.log("Current word =" + currentWord);
-		    if (currentWord === "") {
+		    if (currentWord === "" ||currentWord.length < 4 ) {
 		        return;
 		    }
 
 		    var resultFromServer = data.data.searchWord(currentWord.substr(0, currentWord.length - 1));
 		    console.log("Result from server" + resultFromServer);
 
+		    var tableString = "";
+		    for (var i in resultFromServer) {
+		        tableString += "<tr><td>" + resultFromServer[i]["Language"] + "</td>" +
+                    "<td>" + resultFromServer[i]["Score"] + "</td></tr>";
+		    }
+		    toolTip.html(tableString);
 		    toolTip.css("top", y).css("left", x).css("visibility", "visible");
-		}, 2000);
+		}, 1000);
 	});
 
 	$(".LanguageDetectorArea").bind("mouseout", function() {
@@ -107,7 +113,8 @@
 	$(".LanguageDetectorArea").bind("mousemove", function (data) {
 		x = data.pageX;
 		y = data.pageY;
-	    currentWord = "";
+		currentWord = "";
+		toolTip.css("visibility", "hidden");
 	});
 
     //$(".LanguageDetectorArea").bind("keyup", function(data) {

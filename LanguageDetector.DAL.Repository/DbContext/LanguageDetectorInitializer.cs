@@ -15,19 +15,28 @@ namespace LanguageDetector.DAL.Repository
         {
             base.Seed(context);
 
-            context.Words.Add(new Word
-            {
-                Language = "English",
-                Text = "end",
-                PercentOfReliability = 100
-            });
+            //context.Words.Add(new Word
+            //{
+            //    Language = "English",
+            //    Text = "end",
+            //    PercentOfReliability = 100
+            //});
 
-	        context.Words.Add(new Word
-	        {
-		        Text = "Язык",
-		        Language = "Русский",
-		        PercentOfReliability = 100
-	        });
+            //context.Words.Add(new Word
+            //{
+            //    Text = "Язык",
+            //    Language = "Русский",
+            //    PercentOfReliability = 100
+            //});
+
+            //context.Words.Add(new Word
+            //{
+            //    Text = "Язык",
+            //    Languages = new List<ChanceOfLanguage>
+            //    {
+            //       new ChanceOfLanguage{}
+            //    }
+            //})
         }
     }
 }

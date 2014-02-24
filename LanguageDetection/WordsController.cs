@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Web.Http;
 using Entity;
-using LanguageDetector.BLL.Implementation;
+using LanguageDetection.Models;
 using LanguageDetector.BLL.Implementation.Manager;
 using System.Configuration;
 
@@ -13,21 +10,25 @@ namespace LanguageDetection
 {
     public class WordsController : ApiController
     {
-        private readonly WordManager _wordManager = new WordManager(ConfigurationManager.AppSettings["TranslatorKey"]);
+        private readonly WordManager _wordManager = new WordManager();
 
         // GET api/<controller>
         public IEnumerable<Word> Get()
         {
-	        List<Word> list = _wordManager.GetAll().ToList();
-            _wordManager.GetWordByText("хоккей");
-            return _wordManager.GetAll();
+            return null;
         }
 
         // GET api/<controller>/5
-        public Word Get(string text)
+        public List<LanguageWhithScoreModel> Get(string text)
         {
             var resultWord = _wordManager.GetWordByText(text);
-            return resultWord;
+            var resultToClient = new List<LanguageWhithScoreModel>();
+
+            if (resultWord == null) return resultToClient;
+
+            resultToClient.AddRange(resultWord.Languages.Select(item =>
+                new LanguageWhithScoreModel {Language = item.Language, Score = item.Chance}));
+            return resultToClient;
         }
 
         // POST api/<controller>
