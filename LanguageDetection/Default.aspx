@@ -7,14 +7,22 @@
         <div id="hiddenArea">
             <span class="hiddenWord"></span>
         </div>
-        <asp:TextBox ID="TextBox1" CssClass ="LanguageDetectorArea" runat="server"></asp:TextBox>
+        <asp:TextBox ID="TextBox1" CssClass ="LanguageDetectorArea" MaxLength="94" runat="server" EnableTheming="True" Wrap="False"></asp:TextBox>
 	</div>
-    <table id="toolTip">
-		<tr>
-			<td>Text</td>
-			<td>Language</td>
-			<td>Percent</td>
-		</tr> 
+    <table id="toolTip" class="simple-little-table">
+        <thead>
+            <tr>
+                <td>Language</td>
+                <td>Probability percentage</td>
+            </tr>
+        </thead>
+        <tbody>
+		    <tr>
+			    <td>Text</td>
+			    <td>Language</td>
+			    <td>Percent</td>
+		    </tr>
+        </tbody>
 	</table>
 	
 	<link rel="stylesheet" href="/Content/LanguageDetecor.CSS/Default.css" type="text/css"/>

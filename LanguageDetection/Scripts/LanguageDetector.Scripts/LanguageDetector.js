@@ -26,9 +26,10 @@
 
     //return list of word from text
     function getWordsFromText(text) {
-	    var pattern = /[\wА-Яа-я]+/g;
-	    return text.match(pattern);
-	}
+	    //var pattern = /[\wА-Яа-я]+/g;
+        //return text.match(pattern);
+        return text.split(" ");
+    }
 
 	var toolTip = $("#toolTip");
 	var timerId;             // timer for text proccessing function
@@ -63,7 +64,7 @@
 
 		        for (var item in wordsList) {                      //add behind input tag, elements of span, each span contain one word
 		            resultText += "<span class = 'hiddenWord'>"
-		                + wordsList[item] + " </span>";
+		                + wordsList[item] + "&nbsp" + "</span>";
 		            console.log(wordsList[item]);
 		        }
 		        
@@ -86,11 +87,11 @@
 		    }
 
 		    console.log("Current word =" + currentWord);
-		    if (currentWord === "" ||currentWord.length < 4 ) {
+		    if (currentWord === "" ||currentWord.length < 10 ) {
 		        return;
 		    }
 
-		    var resultFromServer = data.data.searchWord(currentWord.substr(0, currentWord.length - 1));
+		    var resultFromServer = data.data.searchWord(currentWord.substr(0, currentWord.length - 6));
 		    console.log("Result from server" + resultFromServer);
 
 		    var tableString = "";
@@ -98,7 +99,7 @@
 		        tableString += "<tr><td>" + resultFromServer[i]["Language"] + "</td>" +
                     "<td>" + resultFromServer[i]["Score"] + "</td></tr>";
 		    }
-		    toolTip.html(tableString);
+		    toolTip.children().filter("tbody").html(tableString);
 		    toolTip.css("top", y).css("left", x).css("visibility", "visible");
 		}, 1000);
 	});
@@ -117,9 +118,17 @@
 		toolTip.css("visibility", "hidden");
 	});
 
-    //$(".LanguageDetectorArea").bind("keyup", function(data) {
-    //    var text = data.target.value;
-    //});
+	//$(".LanguageDetectorArea").bind("input", function (data) {
+        
+	//    var text = data.target.value;
+	//    if (text.length < 2) {
+	//        return;
+	//    }
+
+	//    if (text[text.length - 1] === text[text.length - 2] & text[text.length - 2] === " ") {
+	//        data.target.value = text.substr(0, text.length - 1);
+	//    }
+	//});
 
     //$(".hiddenWord").live("mouseover", function (data) {
     //    console.log("hiddenWord on");

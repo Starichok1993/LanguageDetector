@@ -14,7 +14,8 @@ namespace LanguageDetector.BLL.Implementation.Manager
     public class WordManager:IWordManager
     {
         private readonly WordRepository _wordRepository;
-        private readonly List<string> _languageList; 
+        private readonly List<string> _languageList;
+
 
         public WordManager()
         {
@@ -69,11 +70,12 @@ namespace LanguageDetector.BLL.Implementation.Manager
             {
                 var docText = GetTextFromDocument(@"C:\Users\Alex\Documents\Visual Studio 2013\Projects\LanguageDetection\LanguageDetection\App_Data\" + lang + ".txt");
                 var score = GetScore(docText, ngramms);
+
                 totalScore += score;
                 languageWithScoreDictionary.Add(lang, score);
             }
 
-            if (Math.Abs(totalScore) < 0.00000)
+            if (Math.Abs(totalScore) < 0.0000005)
             {
                 totalScore = 1;
             }
